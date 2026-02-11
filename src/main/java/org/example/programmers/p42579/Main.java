@@ -5,6 +5,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
+class Music {
+    int id;
+    int play;
+
+    public Music(int id, int play) {
+        this.id = id;
+        this.play = play;
+    }
+}
+
 public class Main {
     public static void main(String[] args) {
         Main T = new Main();
@@ -22,7 +32,7 @@ public class Main {
         ArrayList<Integer> answerList = new ArrayList<>();
 
         HashMap<String, Integer> sortByGenre = new HashMap<>();
-        HashMap<String, ArrayList<int[]>> sortByPlay = new HashMap<>(); // int[고유 번호, 재생 횟수]
+        HashMap<String, ArrayList<Music>> sortByPlay = new HashMap<>();
 
         for (int i = 0; i < genres.length; i++) {
             sortByGenre.put(genres[i], sortByGenre.getOrDefault(genres[i], 0) + plays[i]);
@@ -31,7 +41,7 @@ public class Main {
                 sortByPlay.put(genres[i], new ArrayList<>());
             }
 
-            sortByPlay.get(genres[i]).add(new int[]{i, plays[i]});
+            sortByPlay.get(genres[i]).add(new Music(i, plays[i]));
         }
 
         ArrayList<String> genreKeys = new ArrayList<>(sortByGenre.keySet());
@@ -39,18 +49,18 @@ public class Main {
         Collections.sort(genreKeys, (o1, o2) -> sortByGenre.get(o2) - sortByGenre.get(o1));
 
         for (String genreKey : genreKeys) {
-            ArrayList<int[]> songs = sortByPlay.get(genreKey);
+            ArrayList<Music> songs = sortByPlay.get(genreKey);
 
             Collections.sort(songs, (o1, o2) -> {
-                if (o1[1] == o2[1]) {
-                    return o1[0] - o2[0];
+                if (o1.play == o2.play) {
+                    return o1.id - o2.id;
                 }
 
-                return o2[1] - o1[1];
+                return o2.play - o1.play;
             });
 
             for (int i = 0; i < songs.size() && i < 2; i++) {
-                answerList.add(songs.get(i)[0]);
+                answerList.add(songs.get(i).id);
             }
         }
 
