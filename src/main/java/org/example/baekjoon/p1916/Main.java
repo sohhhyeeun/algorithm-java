@@ -4,9 +4,23 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
+
+class BusRoute implements Comparable<BusRoute> {
+    int city;
+    int cost;
+
+    public BusRoute(int city, int cost) {
+        this.city = city;
+        this.cost = cost;
+    }
+
+    @Override
+    public int compareTo(BusRoute o) {
+        return this.cost - o.cost;
+    }
+}
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -38,15 +52,13 @@ public class Main {
         Arrays.fill(minCost, Integer.MAX_VALUE);
         minCost[start] = 0;
 
-        // 버스 비용을 기준으로 오름차순 정렬
-        Comparator<int[]> costComparator = (o1, o2) -> o1[1] - o2[1];
-        PriorityQueue<int[]> pq = new PriorityQueue<>(costComparator);
-        pq.offer(new int[]{start, 0});
+        PriorityQueue<BusRoute> pq = new PriorityQueue<>();
+        pq.offer(new BusRoute(start, 0));
 
         while (!pq.isEmpty()) {
-            int[] current = pq.poll();
-            int currentCity = current[0];
-            int currentCost = current[1];
+            BusRoute current = pq.poll();
+            int currentCity = current.city;
+            int currentCost = current.cost;
 
             if (minCost[currentCity] < currentCost) {
                 continue;
@@ -60,7 +72,7 @@ public class Main {
 
                     if (newCost < minCost[nextCity]) {
                         minCost[nextCity] = newCost;
-                        pq.offer(new int[]{nextCity, newCost});
+                        pq.offer(new BusRoute(nextCity, newCost));
                     }
                 }
             }
