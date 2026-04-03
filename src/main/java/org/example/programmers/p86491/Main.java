@@ -1,0 +1,26 @@
+package org.example.programmers.p86491;
+
+public class Main {
+    public static void main(String[] args) {
+        int[][] sizes = {{14, 4}, {19, 6}, {6, 16}, {18, 7}, {7, 11}};
+
+        Main T = new Main();
+
+        System.out.println(T.solution(sizes));
+    }
+
+    public int solution(int[][] sizes) {
+        int maxWidth = 0;
+        int maxHeight = 0;
+
+        for (int i = 0; i < sizes.length; i++) {
+            int width = Math.max(sizes[i][0], sizes[i][1]);
+            int height = Math.min(sizes[i][0], sizes[i][1]);
+
+            maxWidth = Math.max(maxWidth, width);
+            maxHeight = Math.max(maxHeight, height);
+        }
+
+        return maxWidth * maxHeight;
+    }
+}
